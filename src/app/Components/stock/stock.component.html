@@ -1,0 +1,95 @@
+
+
+
+<div class="container">
+    
+    <div class="demo-toggles">
+      <mat-slide-toggle [(ngModel)]="Defectuosos" (ngModelChange)="filtroDEF($event)">Mostar Productos Defectuosos</mat-slide-toggle>
+      
+
+    </div>
+    <br>
+    <div class="demo-toggles">
+      
+      <mat-slide-toggle [(ngModel)]="Optimos" (ngModelChange)="filtroOP($event)">Mostar Productos Optimos</mat-slide-toggle>
+
+    </div>
+    <div class="filtro">
+      <mat-form-field >
+      <mat-label>Filtro</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+    </mat-form-field></div>
+    <div class="button-contenedor">
+      <button mat-button (click)="openDialog()" class="button" type="button">Añadir Producto</button>
+    </div>
+  
+    <div class="mat-elevation-z11">
+      <table mat-table [dataSource]="dataSource" matSort>
+    
+      <div matColumnDef="{{disCol}}" *ngFor="let disCol of displayedColumns">
+        <div *ngIf="disCol!='acciones' && saveBtn">
+          <th mat-header-cell *matHeaderCellDef>{{disCol}}</th>
+        <td mat-cell *matCellDef="let element"  [ngStyle]="{'color':!saveBtn && disCol!='identificador'?'rgba(0, 0, 0, 0)':''}">{{element[disCol]}}
+
+          <div *ngIf="disCol!='identificador'" >
+          <mat-form-field *ngIf="!saveBtn" appearance="fill">
+            <input matInput (keyup)="type(element, getValue($event),disCol)" value="{{element[disCol]}}" />
+        </mat-form-field>
+      </div>
+      <span *ngIf="saveBtn">{{element.disCol}}</span>
+        </td>
+        
+        </div>
+        <div *ngIf="disCol=='acciones'">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let identificador">
+          
+
+          <button  mat-mini-fab  color="guardar" *ngIf="!saveBtn"  (click)="save()" class="mr-1">
+            <mat-icon>save</mat-icon>
+            </button> 
+          <button mat-mini-fab  color="editar"*ngIf="saveBtn" (click)="edit()" class="mr-1" >
+            <mat-icon>edit</mat-icon></button>
+            
+          <button  mat-mini-fab color="borrar" *ngIf="saveBtn" (click)="delete(identificador.identificador)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+            <section class="example-section">
+         <mat-radio-group *ngIf="!saveBtn"  [(ngModel)]="labelPosition[identificador]"(ngModelChange)="loadEstado(labelPosition[identificador], identificador.identificador)" >
+          <mat-radio-button class="example-margin" value="Optimo" >Optimo</mat-radio-button>
+          <mat-radio-button class="example-margin" value="Defectuoso">Defectuoso</mat-radio-button>
+        </mat-radio-group>
+      </section>
+        
+        
+        </td>
+        </div>
+        
+      </div>
+  
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+      </table>
+    
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  
+     
+      
+  
+  
+        
+     
+    </div>
+    
+  </div>
+        
+     
+  
+  
